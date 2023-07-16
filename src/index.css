@@ -1,13 +1,510 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: "Cairo";
+  src: url("../public/cairo/Cairo-ExtraLight.woff2") format("woff2"),
+    url("../public/cairo/Cairo-ExtraLight.woff") format("woff"),
+    url("../public/cairo/Cairo-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: "Cairo";
+  src: url("../public/cairo/Cairo-Light.woff2") format("woff2"),
+    url("../public/cairo/Cairo-Light.woff") format("woff"),
+    url("../public/cairo/Cairo-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cairo";
+  src: url("../public/cairo/Cairo-Regular.woff2") format("woff2"),
+    url("../public/cairo/Cairo-Regular.woff") format("woff"),
+    url("../public/cairo/Cairo-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cairo";
+  src: url("../public/cairo/Cairo-SemiBold.woff2") format("woff2"),
+    url("../public/cairo/Cairo-SemiBold.woff") format("woff"),
+    url("../public/cairo/Cairo-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cairo";
+  src: url("../public/cairo/Cairo-Bold.woff2") format("woff2"),
+    url("../public/cairo/Cairo-Bold.woff") format("woff"),
+    url("../public/cairo/Cairo-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cairo";
+  src: url("../public/cairo/Cairo-Black.woff2") format("woff2"),
+    url("../public/cairo/Cairo-Black.woff") format("woff"),
+    url("../public/cairo/Cairo-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: "Cairo", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f5f6;
+}
+.overflow {
+  overflow: hidden;
+}
+:root {
+  --main-color: #664229;
+  --main-hover: #b99976;
+  --sec-color: #f4f5f6;
+  --white-color: #ffffff;
+  --black-color: #000000;
+}
+img {
+  image-rendering: -webkit-optimize-contrast;
+  max-width: 100%;
+}
+/*style scroll bar*/
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--white-color);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--main-color);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--main-hover);
+}
+.form-cont {
+  background-color: var(--white-color);
+  padding: 40px 0 62px;
+  margin-bottom: 28px;
+}
+.section-head {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--main-color);
+  margin: 0 0 28px;
+  text-transform: capitalize;
+  text-align: center;
+}
+.form-cont form {
+  width: 360px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.form-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--main-color);
+  margin: 0 0 8px;
+  text-align: start;
+  display: block;
+}
+.form-group {
+  width: 100%;
+  text-align: start;
+  position: relative;
+  margin-bottom: 15px;
+}
+.form-input {
+  background-color: var(--sec-color);
+  border: 2px solid transparent;
+  height: 40px;
+  width: 100%;
+  padding: 0 20px;
+  border-radius: 0px;
+  text-align: start;
+  color: #999999;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0;
+  outline: none !important;
+  transition: all 0.3s ease-in-out;
+  caret-color: var(--main-color);
+}
+.form-input:focus {
+  border-color: var(--main-color);
+}
+textarea.form-input {
+  height: 100px;
+}
+.submit-btn,
+.register-link {
+  width: 100%;
+  height: 40px;
+  border: 0;
+  outline: none;
+  transition: 0.5s;
+  color: var(--sec-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: capitalize;
+  outline: none !important;
+  background-color: var(--main-color);
+}
+.register-link {
+  background-color: var(--main-hover);
+}
+.register-link:hover {
+  background-color: var(--main-color);
+  text-decoration: none;
+  color: var(--white-color);
+}
+.submit-btn:hover {
+  background-color: var(--main-hover);
+}
+.forget-link {
+  color: var(--main-color);
+  font-size: 14px;
+  font-weight: 700;
+  transition: 0.5s;
+  display: flex;
+  justify-content: center;
+  margin: 19px 0;
+  transition: all 0.3s ease-in-out;
+}
+.forget-link:hover {
+  color: var(--main-hover);
+  text-decoration: none;
+}
+.label-span {
+  font-size: 14px;
+  font-weight: 400;
+  margin-block-start: 3px;
+}
+.check-group {
+  text-align: start;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.check-width {
+  min-width: 50%;
+  /* width: 100%; */
+}
+.check-label {
+  /* min-width: 25%; */
+  text-align: start;
+  position: relative;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--main-color);
+  padding-inline-start: 35px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease-in-out;
+}
+.check-group input[type="checkbox"],
+.check-group input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.check-group .checkmark {
+  border: none;
+  border-radius: 0;
+  background-color: var(--sec-color);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid rgb(227, 228, 230);
+}
+.check-group .custom-checkmark {
+  border-radius: 2px;
+}
+.check-group input[type="checkbox"] ~ .checkmark {
+  border-radius: 2px;
+}
+.check-group:hover input ~ .checkmark {
+  background-color: #f1f1f1;
+  transition: all 0.3s ease-in-out;
+}
+.check-group input:checked ~ .checkmark {
+  background-color: var(--main-color);
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  opacity: 0;
+  visibility: visible;
+}
+.check-group input:checked ~ .checkmark:after {
+  opacity: 1;
+  visibility: visible;
+}
+.check-group input:checked ~ .checkmark {
+  background-color: #f1f1f1;
+}
+.check-group input:checked ~ .custom-checkmark {
+  background-color: var(--main-color);
+}
+.check-group .checkmark:after {
+  content: "";
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  background-color: var(--main-hover);
+}
+.check-group .custom-checkmark:after {
+  content: "\f00c";
+  font-family: "line Awesome Free";
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--white-color);
+  border-radius: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.form-input-relative {
+  position: relative;
+  display: flex;
+}
+.form-group .tel-lang {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 45px;
+  color: #999999;
+  left: 25px;
+  direction: rtl;
+}
+.form-input-relative .password-show {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  z-index: 1;
+  inset-inline-end: 18px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #808080;
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.form-input-relative .password-show input {
+  display: none;
+}
+.form-group .tel-lang {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--main-color);
+  left: 12.5px;
+  direction: rtl;
+}
+.group-input .form-input[type="tel"] {
+  padding-left: 95px;
+}
+.form-input-relative {
+  position: relative;
+  display: flex;
+}
+.form-group .tel-lang img {
+  -webkit-margin-start: 5px;
+  margin-inline-start: 5px;
+}
+.terms-cont {
+  display: flex;
+  margin-bottom: 20px;
+}
+.terms-cont .accept {
+  font-size: 14px;
+  color: #999;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 0;
+  text-align: start;
+  line-height: 1.7;
+}
+.terms-cont a {
+  color: var(--main-hover);
+  text-decoration: underline;
+  margin-inline-start: 4px;
+}
+.terms-cont .check-width {
+  min-width: auto;
+  display: flex;
+}
+.terms-cont .check-group {
+  width: auto;
+}
+.password-show.active i::before {
+  content: "\f06e";
+}
+.breadcrumb-sec {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 0;
+}
+/* .page-head {
+  font-size: 24px;
+  color: var(--white-color);
+  font-weight: 700;
+  margin-bottom: 15px;
+  padding: 0;
+  text-transform: capitalize;
+  text-align: center;
+  display: none;
+} */
+ol.breadcrumb {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+ol.breadcrumb li a,
+ol.breadcrumb li span,
+ol.breadcrumb li {
+  text-transform: capitalize;
+  font-size: 12px;
+  color: #999999;
+  font-weight: 400;
+  text-decoration: none !important;
+  transition: all 0.3s ease-in-out;
+}
+ol.breadcrumb li a:hover {
+  color: var(--main-hover);
+}
+ol.breadcrumb li:not(.active):after {
+  content: "/";
+  padding: 0 7px;
+}
+/*react select*/
+.tel-input {
+  background-color: var(--sec-color);
+  border: 2px solid transparent;
+  height: 40px;
+  width: 100%;
+  border-radius: 0px;
+  text-align: start;
+  color: #999999;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none !important;
+  transition: all 0.3s ease-in-out;
+  caret-color: var(--main-color);
+}
+.react-international-phone-input-container {
+  direction: ltr;
+}
+.react-international-phone-input-container .react-international-phone-input {
+  flex-grow: 1;
+  border: none;
+  background-color: transparent;
+  color: #999999;
+  font-size: 14px;
+  font-weight: 600;
+  height: 40px;
+}
+.react-international-phone-country-selector-button {
+  border: none;
+  background-color: transparent;
+  height: 40px;
+}
+.react-select-container {
+  padding: 0;
+}
+.css-13cymwt-control {
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
+}
+/*react select*/
+.form-section .container {
+  position: relative;
+}
+.error {
+  color: #fc8181;
+  font-size: 0.75rem;
+  text-align: left;
+  margin-top: 0.25rem;
+}
+.loader-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.834);
+  z-index: 1;
+}
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: #3d5af1 transparent #3d5af1 transparent;
+  border-radius: 50%;
+  animation: spin-anim 1.2s linear infinite;
+}
+
+@keyframes spin-anim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
