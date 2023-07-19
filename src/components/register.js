@@ -78,6 +78,7 @@ export default function Register() {
     useEffect(() => {
         getMembershipList();
         getCountries();
+
     }, []);
     const [countriesList, setCountriesList] = useState();
     const [citiesList, setCitiesList] = useState();
