@@ -36,4 +36,6 @@ export const basicSchema = yup.object().shape({
     .oneOf([yup.ref("password"), null], "Passwords must match")
     //equal to password input
     .required("Required"),
+  accept_terms_and_conditions: yup.boolean().required().isTrue()
+
 });
