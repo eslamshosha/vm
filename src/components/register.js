@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
-import { PhoneInput } from "react-international-phone";
-import "react-international-phone/style.css";
 import { useFormik } from "formik";
 import { basicSchema } from "../schemas";
+import flagImg from "../flag-ar.png";
 
 const onSubmit = async (values, actions) => {
-  // console.log(values);
-  // console.log(actions);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
   actions.resetForm();
+  console.log(values);
 };
 
 export default function Register() {
@@ -22,23 +20,22 @@ export default function Register() {
     handleChange,
     handleBlur,
     handleSubmit,
+    setFieldValue,
   } = useFormik({
     initialValues: {
       membership_id: "",
       name: "",
-      email: "",
       full_name: "",
+      phone: "",
+      country_id: "",
+      email: "",
       personal_info: "",
       password: "",
       password_confirmation: "",
     },
-    validationSchema: basicSchema,
+    // validationSchema: basicSchema,
     onSubmit,
   });
-
-  // console.log(errors);
-  const [phone, setPhone] = useState("");
-
   const [show, setShow] = useState(false);
   const showToggle = () => {
     setShow(!show);
@@ -60,20 +57,37 @@ export default function Register() {
         },
       }
     );
-    // console.log(data.data);
     setMembershipList(data.data);
     setLoading(false);
   }
-
   useEffect(() => {
     getMembershipList();
-    // $(".myselect").select2();
   }, []);
+  const [citiesList, setCitiesList] = useState();
+  async function getCities() {
+    let { data } = await axios.get(
+      `https://vm.tasawk.net/rest-api/locations/countries`,
+      {
+        headers: {
+          "Accept-Language": "ar",
+        },
+      }
+    );
+    const updatedOptions = data.data.map((option) => ({
+      value: option.id,
+      label: option.name,
+    }));
+    setCitiesList(updatedOptions);
+  }
+  useEffect(() => {
+    getCities(values.country_id);
+  }, [values.country_id]);
   const [loading, setLoading] = useState(false);
+  const [citySelectedOpt, setCitySelectedOpt] = useState("");
   return (
     <section className="form-section">
       <div className="container">
-        {loading ? (
+        {!loading ? (
           <div className="form-cont">
             <div className="loader-container">
               <div className="spinner"></div>
@@ -84,7 +98,7 @@ export default function Register() {
             <h2 className="section-head">تسجيل حساب جديد</h2>
             <form action="" autoComplete="off" onSubmit={handleSubmit}>
               <div className="model-input">
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label className="form-label required">نوع العضوية</label>
                   <div className="check-group">
                     {membershipList.length > 0 &&
@@ -116,7 +130,7 @@ export default function Register() {
                       <p className="error">{errors.membership_id}</p>
                     )}
                   </div>
-                </div>
+                </div> */}
                 <div className="form-group">
                   <label className="form-label" htmlFor="name">
                     اسم المستخدم
@@ -154,18 +168,30 @@ export default function Register() {
                     <p className="error">{errors.full_name}</p>
                   )}
                 </div>
-                {/* <div className="form-group">
-            <label className="form-label" htmlFor="phone">
-              رقم الجوال
-            </label>
-            <PhoneInput
-              className="tel-input"
-              defaultCountry="sa"
-              value={phone}
-              onChange={(phone) => setPhone(phone)}
-              id="phone"
-            />
-          </div> */}
+                <div className="form-group">
+                  <label className="form-label" htmlFor="phone">
+                    رقم الجوال
+                  </label>
+                  <div className="form-input-relative">
+                    <input
+                      type="tel"
+                      className={`form-input custom-input ${
+                        errors.phone && touched.phone ? "input-error" : ""
+                      }`}
+                      id="phone"
+                      value={values.phone}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    <span className="tel-lang">
+                      996+
+                      <img src={flagImg} alt="" />
+                    </span>
+                  </div>
+                  {errors.phone && touched.phone && (
+                    <p className="error">{errors.phone}</p>
+                  )}
+                </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="email">
                     البريد الإلكتروني
@@ -184,17 +210,30 @@ export default function Register() {
                     <p className="error">{errors.email}</p>
                   )}
                 </div>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="country_id">
+                    الدولة
+                  </label>
+                  <Select
+                    className="react-select-container form-input"
+                    options={citiesList}
+                    id="country_id"
+                    // value={values.country_id}
+                    onChange={(citySelectedOpt) => {
+                      setFieldValue("country_id", citySelectedOpt.id);
+                      setCitySelectedOpt(citySelectedOpt);
+                      console.log(citySelectedOpt);
+                      console.log(values.country_id + "2");
+                    }}
+                    placeholder="اختر"
+                    value={citySelectedOpt}
+                    onBlur={handleBlur}
+                  />
+                  {errors.country_id && touched.country_id && (
+                    <p className="error">{errors.country_id}</p>
+                  )}
+                </div>
                 {/* <div className="form-group">
-            <label className="form-label" htmlFor="country_id">
-              الدولة
-            </label>
-            <Select
-              className="react-select-container form-input"
-              options={options}
-              id="country_id"
-            />
-          </div>
-          <div className="form-group">
             <label className="form-label" htmlFor="city_id">
               المدينة
             </label>

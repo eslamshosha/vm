@@ -298,19 +298,6 @@ textarea.form-input {
   position: relative;
   display: flex;
 }
-.form-group .tel-lang {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 45px;
-  color: #999999;
-  left: 25px;
-  direction: rtl;
-}
 .form-input-relative .password-show {
   position: absolute;
   top: 50%;
@@ -351,6 +338,9 @@ textarea.form-input {
 .form-input-relative {
   position: relative;
   display: flex;
+}
+.form-group .react-select-container {
+  z-index: 2;
 }
 .form-group .tel-lang img {
   -webkit-margin-start: 5px;

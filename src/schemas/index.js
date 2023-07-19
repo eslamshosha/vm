@@ -4,7 +4,7 @@ const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 // min 5 characters, 1 upper case letter, 1 lower case letter, 1 numeric digit.
 
 export const basicSchema = yup.object().shape({
-  membership_id: yup.string().required("الحقل مطلوب"),
+  membership_id: yup.mixed().required("الحقل مطلوب"),
   name: yup
     .string()
     .min(2, "Too Short!")
@@ -20,10 +20,12 @@ export const basicSchema = yup.object().shape({
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("الحقل مطلوب"),
+  phone: yup.number("wrong input").required("الحقل مطلوب"),
   email: yup
     .string()
     .email("يرجى إدخال البريد الإلكتروني الصحيح")
     .required("الحقل مطلوب"),
+  // country_id: yup.mixed().required("الحقل مطلوب"),
   password: yup
     .string()
     .min(5)
