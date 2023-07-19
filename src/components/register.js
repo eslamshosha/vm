@@ -63,8 +63,8 @@ export default function Register() {
   useEffect(() => {
     getMembershipList();
   }, []);
-  const [citiesList, setCitiesList] = useState();
-  async function getCities() {
+  const [countriesList, setCountriesList] = useState();
+  async function getCountries() {
     let { data } = await axios.get(
       `https://vm.tasawk.net/rest-api/locations/countries`,
       {
@@ -77,17 +77,18 @@ export default function Register() {
       value: option.id,
       label: option.name,
     }));
-    setCitiesList(updatedOptions);
+    console.log(updatedOptions);
+    setCountriesList(updatedOptions);
   }
   useEffect(() => {
-    getCities(values.country_id);
-  }, [values.country_id]);
+    getCountries();
+  }, []);
   const [loading, setLoading] = useState(false);
-  const [citySelectedOpt, setCitySelectedOpt] = useState("");
+  const [countriesSelectedOpt, setCountriesSelectedOpt] = useState();
   return (
     <section className="form-section">
       <div className="container">
-        {!loading ? (
+        {loading ? (
           <div className="form-cont">
             <div className="loader-container">
               <div className="spinner"></div>
@@ -98,7 +99,7 @@ export default function Register() {
             <h2 className="section-head">تسجيل حساب جديد</h2>
             <form action="" autoComplete="off" onSubmit={handleSubmit}>
               <div className="model-input">
-                {/* <div className="form-group">
+                <div className="form-group">
                   <label className="form-label required">نوع العضوية</label>
                   <div className="check-group">
                     {membershipList.length > 0 &&
@@ -130,7 +131,7 @@ export default function Register() {
                       <p className="error">{errors.membership_id}</p>
                     )}
                   </div>
-                </div> */}
+                </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="name">
                     اسم المستخدم
@@ -216,17 +217,16 @@ export default function Register() {
                   </label>
                   <Select
                     className="react-select-container form-input"
-                    options={citiesList}
+                    options={countriesList}
                     id="country_id"
                     // value={values.country_id}
-                    onChange={(citySelectedOpt) => {
-                      setFieldValue("country_id", citySelectedOpt.id);
-                      setCitySelectedOpt(citySelectedOpt);
-                      console.log(citySelectedOpt);
-                      console.log(values.country_id + "2");
+                    onChange={(selected) => {
+                      setFieldValue("country_id", selected.value);
+                      setCountriesSelectedOpt(selected);
+                      console.log(selected);
                     }}
                     placeholder="اختر"
-                    value={citySelectedOpt}
+                    value={countriesSelectedOpt}
                     onBlur={handleBlur}
                   />
                   {errors.country_id && touched.country_id && (
