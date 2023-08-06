@@ -5,17 +5,35 @@ import {useFormik} from "formik";
 import {basicSchema} from "../schemas";
 import flagImg from "../flag-ar.png";
 
-const onSubmit = async (values, actions) => {
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    actions.resetForm();
-    console.log(values);
-};
 
 export default function Register() {
+    const onSubmit = async (values, actions) => {
+        const {accept_terms_and_conditions, ...restValues} = values;
+
+        axios
+            .post("https://vm.tasawk.net/rest-api/ecommerce/auth/register", {...restValues, id_number: 111},{headers:{
+                'Accept-language':'ar',
+                }})
+            .then((response) => {
+                setCountriesSelectedOpt(null)
+                setCitySelectedOpt(null)
+                setZoneSelectedOpt(null)
+                actions.resetForm();
+            })
+            .catch((error) => {
+                if (error.response) {
+                    const {data} = error.response;
+                    Object.keys(data.errors).forEach((key) => {
+                        setFieldError(key, data.errors[key][0]);
+                    });
+                }
+            });
+    };
     const {
         values,
         errors,
         touched,
+        setFieldError,
         isSubmitting,
         handleChange,
         handleBlur,
@@ -32,76 +50,99 @@ export default function Register() {
             personal_info: "",
             password: "",
             password_confirmation: "",
+            city_id: "",
+            zone_id: "",
             accept_terms_and_conditions: false,
         },
         validationSchema: basicSchema,
-        onSubmit,
+        onSubmit
     });
     const [show, setShow] = useState(false);
+    const [countriesList, setCountriesList] = useState();
+    const [citiesList, setCitiesList] = useState();
+    const [zonesList, setZonesList] = useState();
+    const [membershipList, setMembershipList] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [countriesSelectedOpt, setCountriesSelectedOpt] = useState();
+    const [citySelectedOpt, setCitySelectedOpt] = useState();
+    const [zoneSelectedOpt, setZoneSelectedOpt] = useState();
     const showToggle = () => {
         setShow(!show);
     };
 
-    const [membershipList, setMembershipList] = useState("");
 
     function getMembershipList() {
         setLoading(true);
-        axios.get("https://vm.tasawk.net/rest-api/ecommerce/memberships", {
-            headers: {
-                "Accept-Language": "ar",
-            },
-        })
-            .then(res => {
-                setMembershipList(res.data.data)
-                setLoading(false);
-            });
-
-
-    }
-
-    function getCitiesByCountry(id) {
-        axios.get(`https://vm.tasawk.net/rest-api/locations/countries/${id}/cities`, {
+        axios
+            .get("https://vm.tasawk.net/rest-api/ecommerce/memberships", {
                 headers: {
                     "Accept-Language": "ar",
                 },
-            }
-        ).then(res => {
-            const updatedOptions = res.data.data.map((option) => ({
-                value: option.id,
-                label: option.name,
-            }));
-            setCitiesList(() => updatedOptions);
-        });
+            })
+            .then((res) => {
+                setMembershipList(res.data.data);
+                setLoading(false);
+            });
+    }
 
+    function getCountries() {
+        axios
+            .get(`https://vm.tasawk.net/rest-api/locations/countries`, {
+                headers: {
+                    "Accept-Language": "ar",
+                },
+            })
+            .then((res) => {
+                const updatedOptions = res.data.data.map((option) => ({
+                    value: option.id,
+                    label: option.name,
+                }));
+                setCountriesList(updatedOptions);
+            });
+    }
+
+    function getCitiesByCountry(id) {
+        axios
+            .get(`https://vm.tasawk.net/rest-api/locations/countries/${id}/cities`, {
+                headers: {
+                    "Accept-Language": "ar",
+                },
+            })
+            .then((res) => {
+                const updatedOptions = res.data.data.map((option) => ({
+                    value: option.id,
+                    label: option.name,
+                }));
+                const cityUrl = res.config.url;
+                setCitiesList(() => updatedOptions);
+            });
+    }
+
+    function getZoneByCity(id) {
+        const country__id = countriesSelectedOpt.value;
+        axios
+            .get(
+                `https://vm.tasawk.net/rest-api/locations/countries/${country__id}/cities/${id}/districts`,
+                {
+                    headers: {
+                        "Accept-Language": "ar",
+                    },
+                }
+            )
+            .then((res) => {
+                const updatedOptions = res.data.data.map((option) => ({
+                    value: option.id,
+                    label: option.name,
+                }));
+                setZonesList(() => updatedOptions);
+            });
     }
 
     useEffect(() => {
         getMembershipList();
         getCountries();
-
     }, []);
-    const [countriesList, setCountriesList] = useState();
-    const [citiesList, setCitiesList] = useState();
 
-    function getCountries() {
-        axios.get(`https://vm.tasawk.net/rest-api/locations/countries`, {
-            headers: {
-                "Accept-Language": "ar",
-            },
-        }).then(res => {
-            const updatedOptions = res.data.data.map((option) => ({
-                value: option.id,
-                label: option.name,
-            }));
-            setCountriesList(updatedOptions);
-
-        })
-
-    }
-
-    const [loading, setLoading] = useState(false);
-    const [countriesSelectedOpt, setCountriesSelectedOpt] = useState();
-    const [citySelectedOpt, setCitySelectedOpt] = useState();
     return (
         <section className="form-section">
             <div className="container">
@@ -113,7 +154,6 @@ export default function Register() {
                     </div>
                 ) : (
                     <div className="form-cont">
-
                         <h2 className="section-head">تسجيل حساب جديد</h2>
                         <form action="" autoComplete="off" onSubmit={handleSubmit}>
                             <div className="model-input">
@@ -241,9 +281,9 @@ export default function Register() {
                                         onChange={(selected) => {
                                             setFieldValue("country_id", selected.value);
                                             setCountriesSelectedOpt(selected);
-                                            getCitiesByCountry(selected.value)
-
+                                            getCitiesByCountry(selected.value);
                                         }}
+
                                         placeholder="اختر"
                                         value={countriesSelectedOpt}
                                         onBlur={handleBlur}
@@ -260,10 +300,11 @@ export default function Register() {
                                         className="react-select-container form-input"
                                         options={citiesList}
                                         id="city_id"
-                                        // value={values.country_id}
                                         onChange={(selected) => {
                                             setFieldValue("city_id", selected.value);
-
+                                            setCitySelectedOpt(selected);
+                                            getZoneByCity(selected.value);
+                                            console.log();
                                         }}
                                         placeholder="اختر"
                                         value={citySelectedOpt}
@@ -271,6 +312,26 @@ export default function Register() {
                                     />
                                     {errors.city_id && touched.city_id && (
                                         <p className="error">{errors.city_id}</p>
+                                    )}
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label" htmlFor="zone_id">
+                                        المنطقة
+                                    </label>
+                                    <Select
+                                        className="react-select-container form-input"
+                                        options={zonesList}
+                                        id="zone_id"
+                                        onChange={(selected) => {
+                                            setFieldValue("zone_id", selected.value);
+                                            setZoneSelectedOpt(selected);
+                                        }}
+                                        placeholder="اختر"
+                                        value={zoneSelectedOpt}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.zone_id && touched.zone_id && (
+                                        <p className="error">{errors.zone_id}</p>
                                     )}
                                 </div>
                                 <div className="form-group">
@@ -350,15 +411,17 @@ export default function Register() {
                                         <p className="error">{errors.personal_info}</p>
                                     )}
                                 </div>
-
                                 <div className="terms-cont">
                                     <div className="check-group">
                                         <div className="check-width">
                                             <label className="check-label">
-                                                <input type="checkbox" onChange={handleChange}
-                                                       onBlur={handleBlur}
-                                                       value={values.accept_terms_and_conditions}
-                                                       id='accept_terms_and_conditions'/>
+                                                <input
+                                                    type="checkbox"
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.accept_terms_and_conditions}
+                                                    id="accept_terms_and_conditions"
+                                                />
                                                 <span className="checkmark custom-checkmark"></span>
                                             </label>
                                         </div>
@@ -368,9 +431,12 @@ export default function Register() {
                                         <a href="#!">الشروط والأحكام</a>
                                     </div>
                                 </div>
-                                {errors.accept_terms_and_conditions && touched.accept_terms_and_conditions && (
-                                    <p className="error">{errors.accept_terms_and_conditions}</p>
-                                )}
+                                {errors.accept_terms_and_conditions &&
+                                    touched.accept_terms_and_conditions && (
+                                        <p className="error">
+                                            {errors.accept_terms_and_conditions}
+                                        </p>
+                                    )}
                                 <button className="submit-btn" disabled={isSubmitting}>
                                     ارسال
                                 </button>
