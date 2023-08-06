@@ -5,7 +5,30 @@ import { useFormik } from "formik";
 import { basicSchema } from "../schemas";
 import flagImg from "../flag-ar.png";
 
+function userRegister(values, { setSubmitting, resetForm, setFieldError }) {
+  const { accept_terms_and_conditions, ...restValues } = values;
+
+  axios
+    .post("https://vm.tasawk.net/rest-api/ecommerce/auth/register", restValues)
+    .then((response) => {
+      setSubmitting(true);
+      console.log(response);
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(restValues);
+        const { data } = error.response;
+        // console.log(data)
+        // console.log(data.errors)
+        Object.keys(data.errors).forEach((key) => {
+          setFieldError(key, data.errors[key][0]);
+        });
+      }
+    });
+}
+
 const onSubmit = async (values, actions) => {
+  userRegister();
   // await new Promise((resolve) => setTimeout(resolve, 1000));
   actions.resetForm();
   console.log(values);
@@ -19,7 +42,7 @@ export default function Register() {
     isSubmitting,
     handleChange,
     handleBlur,
-    handleSubmit,
+    // handleSubmit,
     setFieldValue,
   } = useFormik({
     initialValues: {
@@ -93,7 +116,6 @@ export default function Register() {
           label: option.name,
         }));
         const cityUrl = res.config.url;
-        // getZoneByCity(cityUrl);
         setCitiesList(() => updatedOptions);
       });
   }
@@ -134,7 +156,7 @@ export default function Register() {
         ) : (
           <div className="form-cont">
             <h2 className="section-head">تسجيل حساب جديد</h2>
-            <form action="" autoComplete="off" onSubmit={handleSubmit}>
+            <form action="" autoComplete="off" onSubmit={onSubmit}>
               <div className="model-input">
                 <div className="form-group">
                   <label className="form-label required">نوع العضوية</label>
