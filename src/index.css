@@ -466,7 +466,7 @@ ol.breadcrumb li:not(.active):after {
 .error {
   color: #fc8181;
   font-size: 0.75rem;
-  text-align: left;
+  text-align: start;
   margin-top: 0.25rem;
 }
 .loader-container {
@@ -497,7 +497,11 @@ ol.breadcrumb li:not(.active):after {
   border-radius: 50%;
   animation: spin-anim 1.2s linear infinite;
 }
-
+.spinner-load {
+  color: var(--main-color);
+  font-size: 20px;
+  animation: spin-anim 1.2s linear infinite;
+}
 @keyframes spin-anim {
   0% {
     transform: rotate(0deg);
@@ -505,4 +509,25 @@ ol.breadcrumb li:not(.active):after {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.toast-text-box {
+  text-align: center;
+}
+.Toastify__toast-container {
+  width: 50%;
+}
+.Toastify--animate-icon {
+  display: none;
+}
+
+.Toastify__toast-body {
+  align-items: flex-start;
+  padding: 20px;
+}
+.toast-text-h3 {
+  color: #07bc0c;
+  margin: 0;
+  margin-left: 10px;
+  font-size: 20px;
 }

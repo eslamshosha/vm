@@ -25,7 +25,9 @@ export default function Register() {
         setCitySelectedOpt(null);
         setZoneSelectedOpt(null);
         actions.resetForm();
-        navigate('/otp');
+        setTimeout(() => {
+          navigate("/otp");
+        }, 2000);
       })
       .catch((error) => {
         if (error.response) {
@@ -34,6 +36,7 @@ export default function Register() {
             setFieldError(key, data.errors[key][0]);
           });
         }
+        console.log(errors);
       });
   };
   const {
@@ -77,6 +80,7 @@ export default function Register() {
   const showToggle = () => {
     setShow(!show);
   };
+  console.log(errors);
 
   function getMembershipList() {
     setLoading(true);
