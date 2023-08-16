@@ -6,6 +6,7 @@ import './App.css';
 import Register from './pages/register';
 import SignIn from './pages/signin';
 import Forget from './pages/forget-password';
+import Otp from "./pages/otp";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/register" exact element={<Register />} />
           <Route path="/signin" exact element={<SignIn />} />
           <Route path="/forget-password" exact element={<Forget />} />
+          <Route path="/otp" exact element={<Otp />} />
           <Route path="*" exact element={<Notfound />} />
         </Routes>
         {/* <Footer /> */}

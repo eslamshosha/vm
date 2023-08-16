@@ -36,3 +36,7 @@ export const basicSchema = yup.object().shape({
     .required("Required"),
   accept_terms_and_conditions: yup.boolean().required().isTrue(),
 });
+
+export const otpSchema = yup.object().shape({
+  code: yup.number("wrong input").required("الحقل مطلوب"),
+});

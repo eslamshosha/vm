@@ -489,6 +489,14 @@ ol.breadcrumb li:not(.active):after {
   border-radius: 50%;
   animation: spin-anim 1.2s linear infinite;
 }
+.spinner-btn {
+  width: 12px;
+  height: 12px;
+  border: 8px solid;
+  border-color: #3d5af1 transparent #3d5af1 transparent;
+  border-radius: 50%;
+  animation: spin-anim 1.2s linear infinite;
+}
 
 @keyframes spin-anim {
   0% {
