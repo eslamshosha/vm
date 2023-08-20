@@ -9,10 +9,12 @@ import { FaCheckCircle } from "react-icons/fa";
 import { CgSpinner } from "react-icons/cg";
 
 export default function Forget() {
-  const onSubmit = async (
+  const onSubmit = (
     values,
     { setSubmitting, setFieldError, restForm }
   ) => {
+    setSubmitting(true);
+
     axios
       .post("https://vm.tasawk.net/rest-api/ecommerce/auth/forget-password", values, {
         headers: {
@@ -20,7 +22,7 @@ export default function Forget() {
         },
       })
       .then((response) => {
-        setSubmitting(true);
+        setSubmitting(false);
         console.log(response);
         // localStorage.setItem("item_key", );
         toast.success(successMessage, {

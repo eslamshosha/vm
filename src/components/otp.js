@@ -4,16 +4,14 @@ import { otpSchema } from "../schemas";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { FaCheckCircle } from "react-icons/fa";
 import { CgSpinner } from "react-icons/cg";
 
 export default function Otp() {
   const navigate = useNavigate();
-  const onSubmit = async (
-    values,
-    { setSubmitting, setFieldError, restForm }
-  ) => {
+  const onSubmit = (values, { setSubmitting, setFieldError, restForm }) => {
+    setSubmitting(true);
     axios
       .post(
         "https://vm.tasawk.net/rest-api/ecommerce/auth/code-confirm",
@@ -25,7 +23,7 @@ export default function Otp() {
         }
       )
       .then((response) => {
-        setSubmitting(true);
+        setSubmitting(false);
         console.log("ffff");
         toast.success(successMessage, {
           position: "top-center",
@@ -66,7 +64,7 @@ export default function Otp() {
     initialValues: {
       code: "",
       devices_token: Math.floor(Math.random() * 123456789),
-      phone:'',
+      phone: "",
     },
     validationSchema: otpSchema,
     onSubmit,
@@ -78,7 +76,10 @@ export default function Otp() {
       <div className="toast-text-box">
         <div className="d-flex align-items-end mb-3 justify-content-center">
           <FaCheckCircle size={18} color={"#07bc0c"} />
-          <h3 className="toast-text-h3">  {sessionStorage.getItem("item_key")}كود التحقق صحيح </h3>
+          <h3 className="toast-text-h3">
+            {" "}
+            {sessionStorage.getItem("item_key")}كود التحقق صحيح{" "}
+          </h3>
         </div>
         <div className="d-flex align-items-center justify-content-center">
           <CgSpinner size={20} className="spinner-load" />
@@ -89,7 +90,7 @@ export default function Otp() {
   );
   return (
     <>
-    <ToastContainer />
+      <ToastContainer />
       <section className="form-section">
         <div className="container">
           <div className="form-cont">
@@ -112,8 +113,11 @@ export default function Otp() {
                   )}
                 </div>
                 <button className="submit-btn" disabled={isSubmitting}>
-                  {!isSubmitting ?  "إرسال كود التحقق" : <div className="spinner-btn"></div>
-                  }
+                  {!isSubmitting ? (
+                    "إرسال كود التحقق"
+                  ) : (
+                    <div className="spinner-btn"></div>
+                  )}
                 </button>
               </div>
             </form>

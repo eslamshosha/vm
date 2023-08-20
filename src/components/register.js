@@ -7,7 +7,8 @@ import { basicSchema } from "../schemas";
 import flagImg from "../flag-ar.png";
 
 export default function Register() {
-  const onSubmit = async (values, actions) => {
+  const onSubmit = (values, actions) => {
+    actions.setSubmitting(true);
     const { accept_terms_and_conditions, ...restValues } = values;
     sessionStorage.setItem("item_key", restValues.phone);
     axios
@@ -21,6 +22,7 @@ export default function Register() {
         }
       )
       .then((response) => {
+        actions.setSubmitting(false);
         setCountriesSelectedOpt(null);
         setCitySelectedOpt(null);
         setZoneSelectedOpt(null);
@@ -31,6 +33,7 @@ export default function Register() {
       })
       .catch((error) => {
         if (error.response) {
+          actions.setSubmitting(false);
           const { data } = error.response;
           Object.keys(data.errors).forEach((key) => {
             setFieldError(key, data.errors[key][0]);
@@ -447,8 +450,17 @@ export default function Register() {
                       {errors.accept_terms_and_conditions}
                     </p>
                   )}
-                <button className="submit-btn" disabled={isSubmitting}>
-                  ارسال
+                <button
+                  className="submit-btn"
+                  type="submit"
+                  style={{ marginBottom: "10px" }}
+                  disabled={isSubmitting}
+                >
+                  {!isSubmitting ? (
+                    "ارسال"
+                  ) : (
+                    <div className="spinner-btn"></div>
+                  )}
                 </button>
               </div>
             </form>
