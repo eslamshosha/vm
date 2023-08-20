@@ -37,9 +37,9 @@ export default function Otp() {
           progress: undefined,
           theme: "light",
         });
-        // setTimeout(() => {
-        //   navigate("/signin");
-        // }, 2000);
+        setTimeout(() => {
+          navigate("/signin");
+        }, 2000);
       })
       .catch((error) => {
         if (error.response) {

@@ -40,3 +40,14 @@ export const basicSchema = yup.object().shape({
 export const otpSchema = yup.object().shape({
   code: yup.number("wrong input").required("الحقل مطلوب"),
 });
+export const signInSchema = yup.object().shape({
+  name: yup
+    .string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("الحقل مطلوب"),
+  password: yup.string().min(5).required("الحقل مطلوب"),
+});
+export const phoneSchema = yup.object().shape({
+  code: yup.number("wrong input").required("الحقل مطلوب"),
+});
