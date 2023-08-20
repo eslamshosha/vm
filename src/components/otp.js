@@ -66,7 +66,7 @@ export default function Otp() {
     initialValues: {
       code: "",
       devices_token: Math.floor(Math.random() * 123456789),
-      phone: JSON.parse(sessionStorage.getItem("item_key")),
+      phone:'',
     },
     validationSchema: otpSchema,
     onSubmit,
@@ -78,7 +78,7 @@ export default function Otp() {
       <div className="toast-text-box">
         <div className="d-flex align-items-end mb-3 justify-content-center">
           <FaCheckCircle size={18} color={"#07bc0c"} />
-          <h3 className="toast-text-h3"> كود التحقق صحيح </h3>
+          <h3 className="toast-text-h3">  {sessionStorage.getItem("item_key")}كود التحقق صحيح </h3>
         </div>
         <div className="d-flex align-items-center justify-content-center">
           <CgSpinner size={20} className="spinner-load" />
